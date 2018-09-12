@@ -192,3 +192,56 @@ BinarySearchTree.prototype.size = function () {
     return contador
 }
 
+// HASH TREE
+
+var contenedor = [];
+function HashTable () {
+}
+
+HashTable.prototype.set = function (key,val) {
+
+    if (typeof key != 'string') {
+        throw TypeError('Keys must be strings')
+    } else {
+        let hash = this.hash(key); // guardamos la posición
+        if (contenedor[hash]) {
+            let valor = contenedor[hash].search(function(obj){return obj.key === key});
+            if (valor) {
+                contenedor[hash].addToHead({key, val})                
+            }  
+            contenedor[hash].addToTail({key, val})
+        } else {
+            let newKey = new LinkedList()              
+            contenedor[hash] = newKey
+            contenedor[hash].addToTail({key, val})
+        }
+
+    }
+}
+
+HashTable.prototype.get = function (key) {
+    let hash = this.hash(key);
+    let valor = contenedor[hash].search(function(obj){return obj.key === key});
+    return valor.val
+}
+
+HashTable.prototype.hasKey = function (key) {
+    let hash = this.hash(key);
+    let valor = contenedor[hash].search(function(obj){return obj.key === key});
+    return (!!valor)
+}
+
+HashTable.prototype.numBuckets = 35
+
+HashTable.prototype.hash = function (val) {
+    var hash = 0, i, chr;
+    if (val.length === 0) return hash;
+    for (i = 0; i < val.length; i++) {
+      chr   = val.charCodeAt(i);
+      hash += chr
+    }
+    return hash % this.numBuckets // lo reparte entre 35 lugares
+}
+
+
+
