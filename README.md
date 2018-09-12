@@ -1,0 +1,2 @@
+# JSExercises
+Random Javascript Exercises
