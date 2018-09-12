@@ -99,4 +99,96 @@ LinkedList.prototype.search = function(predicate) {
   return null;
 };
 
+// BINARY TREE
+
+var contador;
+function BinarySearchTree(val1) {
+
+    this.left = null;
+    this.right = null;
+    this.value = val1;
+    contador = 1;
+}
+
+BinarySearchTree.prototype.insert = function (val, position) {
+    var newTree = new BinarySearchTree(val);
+
+    if (!position) {
+        position = this; 
+    }
+
+    if (val > position.value) {
+        if (!position.right) { // si no hay right, crea nuevo nodo/arbol
+            position.right = newTree
+        } else {
+            this.insert(val, position.right)
+        }
+
+    } else {
+        if (!position.left) {
+            position.left = newTree // nuevo arbol izq
+        } else {
+            this.insert(val, position.left)
+        
+        }
+    }
+    contador++;
+}
+
+BinarySearchTree.prototype.contains = function (valor, position) {
+
+    if (valor === this.value) {
+        return true
+    } else { // IZQUIERDA O DERECHA??
+        
+        if (valor > this.value) { // DERECHA
+            if (!this.right) return false;
+            return this.right.contains(valor)
+        } else { // IZQUIERDA
+            if (!this.left) return false;
+            return this.left.contains(valor)
+
+        }
+    }
+
+}
+
+BinarySearchTree.prototype.depthFirstForEach = function (fn, tipo) {
+    switch (tipo) {
+        case 'pre-order': // MUESTRA IZQUIERDA DERECHA
+            fn(this.value);
+            if (this.left) {
+                this.left.depthFirstForEach(fn,tipo)
+            }
+            if (this.right) {
+                this.right.depthFirstForEach(fn,tipo)
+            }
+            break
+        case 'post-order': // IZQUIERDA DERECHA MUESTRA
+            if (this.left) {
+                this.left.depthFirstForEach(fn,tipo)
+            }
+            if (this.right) {
+                this.right.depthFirstForEach(fn,tipo)
+            }
+            fn(this.value);
+            break;
+        default: // IZQUIERDA MUESTRA DERECHA
+            if (this.left) {
+                this.left.depthFirstForEach(fn, tipo)
+            } // puntero 
+            fn(this.value);
+            if (this.right) {
+                this.right.depthFirstForEach(fn, tipo)
+            } 
+
+    }
+}
+
+BinarySearchTree.prototype.breadthFirstForEach = function () {
+
+}
+BinarySearchTree.prototype.size = function () {
+    return contador
+}
 
